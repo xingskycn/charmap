@@ -6,11 +6,11 @@ type codecISO_8859_16 struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecISO_8859_16) Encode(s string) string {
+func (c codecISO_8859_16) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecISO_8859_16) Decode(s string) string {
+func (c codecISO_8859_16) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 

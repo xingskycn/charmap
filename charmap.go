@@ -9,14 +9,32 @@ var aliasesMap = make(map[string]string)
 var codecsMap = make(map[string]Codec)
 
 type Codec interface {
-	Encode(data string) string
-	Decode(data string) string
+	Encode(data string) (string, error)
+	Decode(data string) (string, error)
 }
 
 type Charmap struct {
 	Name    string
 	Aliases []string
 	Codec
+}
+
+type EncodingNotSupportedError string
+
+func (e EncodingNotSupportedError) Error() string {
+	return "encoding not supported: " + string(e)
+}
+
+type EncodeError string
+
+func (e EncodeError) Error() string {
+	return string(e)
+}
+
+type DecodeError string
+
+func (e DecodeError) Error() string {
+	return string(e)
 }
 
 func Register(c Charmap) {
@@ -34,7 +52,7 @@ func List() []string {
 	return list
 }
 
-func Encode(data string, encoding string) string {
+func Encode(data string, encoding string) (string, error) {
 	encoding = strings.ToLower(encoding)
 	encoding = strings.Replace(encoding, "-", "_", -1)
 
@@ -43,14 +61,14 @@ func Encode(data string, encoding string) string {
 	}
 
 	if codec, ok := codecsMap[encoding]; ok {
-		result := codec.Encode(data)
-		return result
+		result, err := codec.Encode(data)
+		return result, err
 	}
 
-	return ""
+	return "", EncodingNotSupportedError(encoding)
 }
 
-func Decode(data string, encoding string) string {
+func Decode(data string, encoding string) (string, error) {
 	encoding = strings.ToLower(encoding)
 	encoding = strings.Replace(encoding, "-", "_", -1)
 
@@ -59,11 +77,11 @@ func Decode(data string, encoding string) string {
 	}
 
 	if codec, ok := codecsMap[encoding]; ok {
-		result := codec.Decode(data)
-		return result
+		result, err := codec.Decode(data)
+		return result, err
 	}
 
-	return ""
+	return "", EncodingNotSupportedError(encoding)
 }
 
 // some functions to simplify 8bit codecs definition 
@@ -76,46 +94,41 @@ func reverseByteRuneMap(m map[byte]rune) (newmap map[rune]byte) {
 	return
 }
 
-func mapBytesToRunes_(cm map[byte]rune, data string) string {
-	size := len(data)
-	result := ""
-
-	for i := 0; i < size; i++ {
-		c := data[i]
-		if r, ok := cm[c]; ok {
-			result += string(r)
-		}
-	}
-
-	return result
-}
-
-func mapBytesToRunes(cm map[byte]rune, data string) string {
+func mapBytesToRunes(cm map[byte]rune, data string) (string, error) {
 	size := len(data)
 	result := make([]byte, 0, size)
 	buf := make([]byte, 6)
 	var n int
+	var err error
 
 	for i := 0; i < size; i++ {
 		c := data[i]
 		if r, ok := cm[c]; ok {
 			n = utf8.EncodeRune(buf, r)
 			result = append(result, buf[:n]...)
+		} else {
+			err = DecodeError("cannot decode one or more bytes")
+			n = utf8.EncodeRune(buf, utf8.RuneError)
+			result = append(result, buf[:n]...)
 		}
 	}
 
-	return string(result)
+	return string(result), err
 }
 
-func mapRunesToBytes(cm map[rune]byte, data string) string {
+func mapRunesToBytes(cm map[rune]byte, data string) (string, error) {
 	size := len(data)
 	result := make([]byte, 0, size)
+	var err error
 
 	for _, r := range data {
 		if c, ok := cm[r]; ok {
 			result = append(result, c)
+		} else {
+			err = EncodeError("cannot encode one or more runes")
+			result = append(result, '?')
 		}
 	}
 
-	return string(result)
+	return string(result), err
 }

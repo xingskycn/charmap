@@ -6,11 +6,11 @@ type codecMAC_ICELAND struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecMAC_ICELAND) Encode(s string) string {
+func (c codecMAC_ICELAND) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecMAC_ICELAND) Decode(s string) string {
+func (c codecMAC_ICELAND) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 

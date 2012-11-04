@@ -6,11 +6,11 @@ type codecCP1256 struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecCP1256) Encode(s string) string {
+func (c codecCP1256) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecCP1256) Decode(s string) string {
+func (c codecCP1256) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 

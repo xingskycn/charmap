@@ -6,11 +6,11 @@ type codecKOI8_R struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecKOI8_R) Encode(s string) string {
+func (c codecKOI8_R) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecKOI8_R) Decode(s string) string {
+func (c codecKOI8_R) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 

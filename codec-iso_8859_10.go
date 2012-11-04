@@ -6,17 +6,16 @@ type codecISO_8859_10 struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecISO_8859_10) Encode(s string) string {
+func (c codecISO_8859_10) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecISO_8859_10) Decode(s string) string {
+func (c codecISO_8859_10) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 
 func init() {
 	charmapDecode := map[byte]rune{
-		// '\xA4' 
 		'\x00':	'\u0000',	 // 	NULL
 		'\x01':	'\u0001',	 // 	START OF HEADING
 		'\x02':	'\u0002',	 // 	START OF TEXT

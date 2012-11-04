@@ -6,11 +6,11 @@ type codecMAC_LATIN2 struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecMAC_LATIN2) Encode(s string) string {
+func (c codecMAC_LATIN2) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecMAC_LATIN2) Decode(s string) string {
+func (c codecMAC_LATIN2) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 

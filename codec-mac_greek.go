@@ -6,11 +6,11 @@ type codecMAC_GREEK struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecMAC_GREEK) Encode(s string) string {
+func (c codecMAC_GREEK) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecMAC_GREEK) Decode(s string) string {
+func (c codecMAC_GREEK) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 
