@@ -6,11 +6,11 @@ type codecCP856 struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecCP856) Encode(s string) (string, error) {
+func (c *codecCP856) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecCP856) Decode(s string) (string, error) {
+func (c *codecCP856) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 
@@ -277,12 +277,12 @@ func init() {
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := codecCP856{
+	codec := &codecCP856{
 		EncodeMap: charmapEncode,
 		DecodeMap: charmapDecode,
 	}
 
-	cm := Charmap{
+	cm := charmap{
 		Name: "cp856",
 		Aliases: []string{
 			"856",
@@ -290,5 +290,5 @@ func init() {
 		Codec: codec,
 	}
 
-	Register(cm)
+	register(cm)
 }

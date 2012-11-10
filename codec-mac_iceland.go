@@ -6,11 +6,11 @@ type codecMAC_ICELAND struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecMAC_ICELAND) Encode(s string) (string, error) {
+func (c *codecMAC_ICELAND) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecMAC_ICELAND) Decode(s string) (string, error) {
+func (c *codecMAC_ICELAND) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 
@@ -277,12 +277,12 @@ func init() {
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := codecMAC_ICELAND{
+	codec := &codecMAC_ICELAND{
 		EncodeMap: charmapEncode,
 		DecodeMap: charmapDecode,
 	}
 
-	cm := Charmap{
+	cm := charmap{
 		Name: "mac_iceland",
 		Aliases: []string{
 			"maciceland",
@@ -290,5 +290,5 @@ func init() {
 		Codec: codec,
 	}
 
-	Register(cm)
+	register(cm)
 }

@@ -6,11 +6,11 @@ type codecKOI8_U struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecKOI8_U) Encode(s string) (string, error) {
+func (c *codecKOI8_U) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecKOI8_U) Decode(s string) (string, error) {
+func (c *codecKOI8_U) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 
@@ -277,12 +277,12 @@ func init() {
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := codecKOI8_U{
+	codec := &codecKOI8_U{
 		EncodeMap: charmapEncode,
 		DecodeMap: charmapDecode,
 	}
 
-	cm := Charmap{
+	cm := charmap{
 		Name: "koi8_u",
 		Aliases: []string{
 			"koi8u",
@@ -290,5 +290,5 @@ func init() {
 		Codec: codec,
 	}
 
-	Register(cm)
+	register(cm)
 }

@@ -6,11 +6,11 @@ type codecMAC_TURKISH struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecMAC_TURKISH) Encode(s string) (string, error) {
+func (c *codecMAC_TURKISH) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecMAC_TURKISH) Decode(s string) (string, error) {
+func (c *codecMAC_TURKISH) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 
@@ -277,12 +277,12 @@ func init() {
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := codecMAC_TURKISH{
+	codec := &codecMAC_TURKISH{
 		EncodeMap: charmapEncode,
 		DecodeMap: charmapDecode,
 	}
 
-	cm := Charmap{
+	cm := charmap{
 		Name: "mac_turkish",
 		Aliases: []string{
 			"macturkish",
@@ -290,5 +290,5 @@ func init() {
 		Codec: codec,
 	}
 
-	Register(cm)
+	register(cm)
 }

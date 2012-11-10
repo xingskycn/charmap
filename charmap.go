@@ -6,17 +6,24 @@ import (
 )
 
 var aliasesMap = make(map[string]string)
-var codecsMap = make(map[string]Codec)
+var codecsMap = make(map[string]codec)
 
-type Codec interface {
+type charmap struct {
+	Name    string
+	Aliases []string
+	Codec   codec
+}
+
+type codec interface {
 	Encode(data string) (string, error)
 	Decode(data string) (string, error)
 }
 
-type Charmap struct {
-	Name    string
-	Aliases []string
-	Codec
+func register(c charmap) {
+	codecsMap[c.Name] = c.Codec
+	for _, alias := range c.Aliases {
+		aliasesMap[alias] = c.Name
+	}
 }
 
 type EncodingNotSupportedError string
@@ -37,13 +44,7 @@ func (e DecodeError) Error() string {
 	return string(e)
 }
 
-func Register(c Charmap) {
-	codecsMap[c.Name] = c.Codec
-	for _, alias := range c.Aliases {
-		aliasesMap[alias] = c.Name
-	}
-}
-
+// List returns a list of all supported encodings as a slice of strings
 func List() []string {
 	list := make([]string, 0)
 	for name, _ := range codecsMap {
@@ -52,6 +53,8 @@ func List() []string {
 	return list
 }
 
+// Encode encodes the string data from utf8 to encoding
+// If encoding is not supported it returns unchanged string and EncodingNotSupportedError
 func Encode(data string, encoding string) (string, error) {
 	encoding = strings.ToLower(encoding)
 	encoding = strings.Replace(encoding, "-", "_", -1)
@@ -65,9 +68,11 @@ func Encode(data string, encoding string) (string, error) {
 		return result, err
 	}
 
-	return "", EncodingNotSupportedError(encoding)
+	return data, EncodingNotSupportedError(encoding)
 }
 
+// Decode decodes the string data from encoding into utf8
+// If encoding is not supported it returns unchanged string and EncodingNotSupportedError
 func Decode(data string, encoding string) (string, error) {
 	encoding = strings.ToLower(encoding)
 	encoding = strings.Replace(encoding, "-", "_", -1)
@@ -81,7 +86,7 @@ func Decode(data string, encoding string) (string, error) {
 		return result, err
 	}
 
-	return "", EncodingNotSupportedError(encoding)
+	return data, EncodingNotSupportedError(encoding)
 }
 
 // some functions to simplify 8bit codecs definition 

@@ -6,11 +6,11 @@ type codecMAC_CYRILLIC struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecMAC_CYRILLIC) Encode(s string) (string, error) {
+func (c *codecMAC_CYRILLIC) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecMAC_CYRILLIC) Decode(s string) (string, error) {
+func (c *codecMAC_CYRILLIC) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 
@@ -277,12 +277,12 @@ func init() {
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := codecMAC_CYRILLIC{
+	codec := &codecMAC_CYRILLIC{
 		EncodeMap: charmapEncode,
 		DecodeMap: charmapDecode,
 	}
 
-	cm := Charmap{
+	cm := charmap{
 		Name: "mac_cyrillic",
 		Aliases: []string{
 			"maccyrillic",
@@ -290,5 +290,5 @@ func init() {
 		Codec: codec,
 	}
 
-	Register(cm)
+	register(cm)
 }

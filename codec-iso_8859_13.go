@@ -6,11 +6,11 @@ type codecISO_8859_13 struct {
 	DecodeMap map[byte]rune
 }
 
-func (c codecISO_8859_13) Encode(s string) (string, error) {
+func (c *codecISO_8859_13) Encode(s string) (string, error) {
 	return mapRunesToBytes(c.EncodeMap, s)
 }
 
-func (c codecISO_8859_13) Decode(s string) (string, error) {
+func (c *codecISO_8859_13) Decode(s string) (string, error) {
 	return mapBytesToRunes(c.DecodeMap, s)
 }
 
@@ -277,12 +277,12 @@ func init() {
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := codecISO_8859_13{
+	codec := &codecISO_8859_13{
 		EncodeMap: charmapEncode,
 		DecodeMap: charmapDecode,
 	}
 
-	cm := Charmap{
+	cm := charmap{
 		Name: "iso_8859_13",
 		Aliases: []string{
 			"8859_13",
@@ -291,5 +291,5 @@ func init() {
 		Codec: codec,
 	}
 
-	Register(cm)
+	register(cm)
 }
