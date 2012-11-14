@@ -1,20 +1,8 @@
 
 package charmap
 
-type codecISO_8859_6 struct {
-	EncodeMap map[rune]byte
-	DecodeMap map[byte]rune
-}
-
-func (c *codecISO_8859_6) Encode(s string) (string, error) {
-	return mapRunesToBytes(c.EncodeMap, s)
-}
-
-func (c *codecISO_8859_6) Decode(s string) (string, error) {
-	return mapBytesToRunes(c.DecodeMap, s)
-}
-
 func init() {
+
 	charmapDecode := map[byte]rune{
 		'\x00':	'\u0000',	 // 	NULL
 		'\x01':	'\u0001',	 // 	START OF HEADING
@@ -177,74 +165,100 @@ func init() {
 		'\x9E':	'\u009E',	 // 	<control>
 		'\x9F':	'\u009F',	 // 	<control>
 		'\xA0':	'\u00A0',	 // 	NO-BREAK SPACE
-		'\xA4':	'\u00A4',	 // 	CURRENCY SIGN
-		'\xAC':	'\u060C',	 // 	ARABIC COMMA
-		'\xAD':	'\u00AD',	 // 	SOFT HYPHEN
-		'\xBB':	'\u061B',	 // 	ARABIC SEMICOLON
-		'\xBF':	'\u061F',	 // 	ARABIC QUESTION MARK
-		'\xC1':	'\u0621',	 // 	ARABIC LETTER HAMZA
-		'\xC2':	'\u0622',	 // 	ARABIC LETTER ALEF WITH MADDA ABOVE
-		'\xC3':	'\u0623',	 // 	ARABIC LETTER ALEF WITH HAMZA ABOVE
-		'\xC4':	'\u0624',	 // 	ARABIC LETTER WAW WITH HAMZA ABOVE
-		'\xC5':	'\u0625',	 // 	ARABIC LETTER ALEF WITH HAMZA BELOW
-		'\xC6':	'\u0626',	 // 	ARABIC LETTER YEH WITH HAMZA ABOVE
-		'\xC7':	'\u0627',	 // 	ARABIC LETTER ALEF
-		'\xC8':	'\u0628',	 // 	ARABIC LETTER BEH
-		'\xC9':	'\u0629',	 // 	ARABIC LETTER TEH MARBUTA
-		'\xCA':	'\u062A',	 // 	ARABIC LETTER TEH
-		'\xCB':	'\u062B',	 // 	ARABIC LETTER THEH
-		'\xCC':	'\u062C',	 // 	ARABIC LETTER JEEM
-		'\xCD':	'\u062D',	 // 	ARABIC LETTER HAH
-		'\xCE':	'\u062E',	 // 	ARABIC LETTER KHAH
-		'\xCF':	'\u062F',	 // 	ARABIC LETTER DAL
-		'\xD0':	'\u0630',	 // 	ARABIC LETTER THAL
-		'\xD1':	'\u0631',	 // 	ARABIC LETTER REH
-		'\xD2':	'\u0632',	 // 	ARABIC LETTER ZAIN
-		'\xD3':	'\u0633',	 // 	ARABIC LETTER SEEN
-		'\xD4':	'\u0634',	 // 	ARABIC LETTER SHEEN
-		'\xD5':	'\u0635',	 // 	ARABIC LETTER SAD
-		'\xD6':	'\u0636',	 // 	ARABIC LETTER DAD
-		'\xD7':	'\u0637',	 // 	ARABIC LETTER TAH
-		'\xD8':	'\u0638',	 // 	ARABIC LETTER ZAH
-		'\xD9':	'\u0639',	 // 	ARABIC LETTER AIN
-		'\xDA':	'\u063A',	 // 	ARABIC LETTER GHAIN
-		'\xE0':	'\u0640',	 // 	ARABIC TATWEEL
-		'\xE1':	'\u0641',	 // 	ARABIC LETTER FEH
-		'\xE2':	'\u0642',	 // 	ARABIC LETTER QAF
-		'\xE3':	'\u0643',	 // 	ARABIC LETTER KAF
-		'\xE4':	'\u0644',	 // 	ARABIC LETTER LAM
-		'\xE5':	'\u0645',	 // 	ARABIC LETTER MEEM
-		'\xE6':	'\u0646',	 // 	ARABIC LETTER NOON
-		'\xE7':	'\u0647',	 // 	ARABIC LETTER HEH
-		'\xE8':	'\u0648',	 // 	ARABIC LETTER WAW
-		'\xE9':	'\u0649',	 // 	ARABIC LETTER ALEF MAKSURA
-		'\xEA':	'\u064A',	 // 	ARABIC LETTER YEH
-		'\xEB':	'\u064B',	 // 	ARABIC FATHATAN
-		'\xEC':	'\u064C',	 // 	ARABIC DAMMATAN
-		'\xED':	'\u064D',	 // 	ARABIC KASRATAN
-		'\xEE':	'\u064E',	 // 	ARABIC FATHA
-		'\xEF':	'\u064F',	 // 	ARABIC DAMMA
-		'\xF0':	'\u0650',	 // 	ARABIC KASRA
-		'\xF1':	'\u0651',	 // 	ARABIC SHADDA
-		'\xF2':	'\u0652',	 // 	ARABIC SUKUN
+		'\xA1':	'\u0E01',	 // 	THAI CHARACTER KO KAI
+		'\xA2':	'\u0E02',	 // 	THAI CHARACTER KHO KHAI
+		'\xA3':	'\u0E03',	 // 	THAI CHARACTER KHO KHUAT
+		'\xA4':	'\u0E04',	 // 	THAI CHARACTER KHO KHWAI
+		'\xA5':	'\u0E05',	 // 	THAI CHARACTER KHO KHON
+		'\xA6':	'\u0E06',	 // 	THAI CHARACTER KHO RAKHANG
+		'\xA7':	'\u0E07',	 // 	THAI CHARACTER NGO NGU
+		'\xA8':	'\u0E08',	 // 	THAI CHARACTER CHO CHAN
+		'\xA9':	'\u0E09',	 // 	THAI CHARACTER CHO CHING
+		'\xAA':	'\u0E0A',	 // 	THAI CHARACTER CHO CHANG
+		'\xAB':	'\u0E0B',	 // 	THAI CHARACTER SO SO
+		'\xAC':	'\u0E0C',	 // 	THAI CHARACTER CHO CHOE
+		'\xAD':	'\u0E0D',	 // 	THAI CHARACTER YO YING
+		'\xAE':	'\u0E0E',	 // 	THAI CHARACTER DO CHADA
+		'\xAF':	'\u0E0F',	 // 	THAI CHARACTER TO PATAK
+		'\xB0':	'\u0E10',	 // 	THAI CHARACTER THO THAN
+		'\xB1':	'\u0E11',	 // 	THAI CHARACTER THO NANGMONTHO
+		'\xB2':	'\u0E12',	 // 	THAI CHARACTER THO PHUTHAO
+		'\xB3':	'\u0E13',	 // 	THAI CHARACTER NO NEN
+		'\xB4':	'\u0E14',	 // 	THAI CHARACTER DO DEK
+		'\xB5':	'\u0E15',	 // 	THAI CHARACTER TO TAO
+		'\xB6':	'\u0E16',	 // 	THAI CHARACTER THO THUNG
+		'\xB7':	'\u0E17',	 // 	THAI CHARACTER THO THAHAN
+		'\xB8':	'\u0E18',	 // 	THAI CHARACTER THO THONG
+		'\xB9':	'\u0E19',	 // 	THAI CHARACTER NO NU
+		'\xBA':	'\u0E1A',	 // 	THAI CHARACTER BO BAIMAI
+		'\xBB':	'\u0E1B',	 // 	THAI CHARACTER PO PLA
+		'\xBC':	'\u0E1C',	 // 	THAI CHARACTER PHO PHUNG
+		'\xBD':	'\u0E1D',	 // 	THAI CHARACTER FO FA
+		'\xBE':	'\u0E1E',	 // 	THAI CHARACTER PHO PHAN
+		'\xBF':	'\u0E1F',	 // 	THAI CHARACTER FO FAN
+		'\xC0':	'\u0E20',	 // 	THAI CHARACTER PHO SAMPHAO
+		'\xC1':	'\u0E21',	 // 	THAI CHARACTER MO MA
+		'\xC2':	'\u0E22',	 // 	THAI CHARACTER YO YAK
+		'\xC3':	'\u0E23',	 // 	THAI CHARACTER RO RUA
+		'\xC4':	'\u0E24',	 // 	THAI CHARACTER RU
+		'\xC5':	'\u0E25',	 // 	THAI CHARACTER LO LING
+		'\xC6':	'\u0E26',	 // 	THAI CHARACTER LU
+		'\xC7':	'\u0E27',	 // 	THAI CHARACTER WO WAEN
+		'\xC8':	'\u0E28',	 // 	THAI CHARACTER SO SALA
+		'\xC9':	'\u0E29',	 // 	THAI CHARACTER SO RUSI
+		'\xCA':	'\u0E2A',	 // 	THAI CHARACTER SO SUA
+		'\xCB':	'\u0E2B',	 // 	THAI CHARACTER HO HIP
+		'\xCC':	'\u0E2C',	 // 	THAI CHARACTER LO CHULA
+		'\xCD':	'\u0E2D',	 // 	THAI CHARACTER O ANG
+		'\xCE':	'\u0E2E',	 // 	THAI CHARACTER HO NOKHUK
+		'\xCF':	'\u0E2F',	 // 	THAI CHARACTER PAIYANNOI
+		'\xD0':	'\u0E30',	 // 	THAI CHARACTER SARA A
+		'\xD1':	'\u0E31',	 // 	THAI CHARACTER MAI HAN-AKAT
+		'\xD2':	'\u0E32',	 // 	THAI CHARACTER SARA AA
+		'\xD3':	'\u0E33',	 // 	THAI CHARACTER SARA AM
+		'\xD4':	'\u0E34',	 // 	THAI CHARACTER SARA I
+		'\xD5':	'\u0E35',	 // 	THAI CHARACTER SARA II
+		'\xD6':	'\u0E36',	 // 	THAI CHARACTER SARA UE
+		'\xD7':	'\u0E37',	 // 	THAI CHARACTER SARA UEE
+		'\xD8':	'\u0E38',	 // 	THAI CHARACTER SARA U
+		'\xD9':	'\u0E39',	 // 	THAI CHARACTER SARA UU
+		'\xDA':	'\u0E3A',	 // 	THAI CHARACTER PHINTHU
+		'\xDF':	'\u0E3F',	 // 	THAI CURRENCY SYMBOL BAHT
+		'\xE0':	'\u0E40',	 // 	THAI CHARACTER SARA E
+		'\xE1':	'\u0E41',	 // 	THAI CHARACTER SARA AE
+		'\xE2':	'\u0E42',	 // 	THAI CHARACTER SARA O
+		'\xE3':	'\u0E43',	 // 	THAI CHARACTER SARA AI MAIMUAN
+		'\xE4':	'\u0E44',	 // 	THAI CHARACTER SARA AI MAIMALAI
+		'\xE5':	'\u0E45',	 // 	THAI CHARACTER LAKKHANGYAO
+		'\xE6':	'\u0E46',	 // 	THAI CHARACTER MAIYAMOK
+		'\xE7':	'\u0E47',	 // 	THAI CHARACTER MAITAIKHU
+		'\xE8':	'\u0E48',	 // 	THAI CHARACTER MAI EK
+		'\xE9':	'\u0E49',	 // 	THAI CHARACTER MAI THO
+		'\xEA':	'\u0E4A',	 // 	THAI CHARACTER MAI TRI
+		'\xEB':	'\u0E4B',	 // 	THAI CHARACTER MAI CHATTAWA
+		'\xEC':	'\u0E4C',	 // 	THAI CHARACTER THANTHAKHAT
+		'\xED':	'\u0E4D',	 // 	THAI CHARACTER NIKHAHIT
+		'\xEE':	'\u0E4E',	 // 	THAI CHARACTER YAMAKKAN
+		'\xEF':	'\u0E4F',	 // 	THAI CHARACTER FONGMAN
+		'\xF0':	'\u0E50',	 // 	THAI DIGIT ZERO
+		'\xF1':	'\u0E51',	 // 	THAI DIGIT ONE
+		'\xF2':	'\u0E52',	 // 	THAI DIGIT TWO
+		'\xF3':	'\u0E53',	 // 	THAI DIGIT THREE
+		'\xF4':	'\u0E54',	 // 	THAI DIGIT FOUR
+		'\xF5':	'\u0E55',	 // 	THAI DIGIT FIVE
+		'\xF6':	'\u0E56',	 // 	THAI DIGIT SIX
+		'\xF7':	'\u0E57',	 // 	THAI DIGIT SEVEN
+		'\xF8':	'\u0E58',	 // 	THAI DIGIT EIGHT
+		'\xF9':	'\u0E59',	 // 	THAI DIGIT NINE
+		'\xFA':	'\u0E5A',	 // 	THAI CHARACTER ANGKHANKHU
+		'\xFB':	'\u0E5B',	 // 	THAI CHARACTER KHOMUT
 
 	}
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := &codecISO_8859_6{
-		EncodeMap: charmapEncode,
-		DecodeMap: charmapDecode,
-	}
+	newCodec := &codecMap8Bit{EncodeMap: charmapEncode, DecodeMap: charmapDecode}
 
-	cm := charmap{
-		Name: "iso_8859_6",
-		Aliases: []string{
-			"8859_6",
-			"iso8859_6",
-		},
-		Codec: codec,
-	}
+	register(newCodec, "ISO-8859-11", "8859-11", "ISO8859-11")
 
-	register(cm)
 }

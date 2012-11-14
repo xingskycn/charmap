@@ -1,20 +1,8 @@
 
 package charmap
 
-type codecISO_8859_1 struct {
-	EncodeMap map[rune]byte
-	DecodeMap map[byte]rune
-}
-
-func (c *codecISO_8859_1) Encode(s string) (string, error) {
-	return mapRunesToBytes(c.EncodeMap, s)
-}
-
-func (c *codecISO_8859_1) Decode(s string) (string, error) {
-	return mapBytesToRunes(c.DecodeMap, s)
-}
-
 func init() {
+
 	charmapDecode := map[byte]rune{
 		'\x00':	'\u0000',	 // 	NULL
 		'\x01':	'\u0001',	 // 	START OF HEADING
@@ -224,7 +212,7 @@ func init() {
 		'\xCD':	'\u00CD',	 // 	LATIN CAPITAL LETTER I WITH ACUTE
 		'\xCE':	'\u00CE',	 // 	LATIN CAPITAL LETTER I WITH CIRCUMFLEX
 		'\xCF':	'\u00CF',	 // 	LATIN CAPITAL LETTER I WITH DIAERESIS
-		'\xD0':	'\u00D0',	 // 	LATIN CAPITAL LETTER ETH (Icelandic)
+		'\xD0':	'\u011E',	 // 	LATIN CAPITAL LETTER G WITH BREVE
 		'\xD1':	'\u00D1',	 // 	LATIN CAPITAL LETTER N WITH TILDE
 		'\xD2':	'\u00D2',	 // 	LATIN CAPITAL LETTER O WITH GRAVE
 		'\xD3':	'\u00D3',	 // 	LATIN CAPITAL LETTER O WITH ACUTE
@@ -237,9 +225,9 @@ func init() {
 		'\xDA':	'\u00DA',	 // 	LATIN CAPITAL LETTER U WITH ACUTE
 		'\xDB':	'\u00DB',	 // 	LATIN CAPITAL LETTER U WITH CIRCUMFLEX
 		'\xDC':	'\u00DC',	 // 	LATIN CAPITAL LETTER U WITH DIAERESIS
-		'\xDD':	'\u00DD',	 // 	LATIN CAPITAL LETTER Y WITH ACUTE
-		'\xDE':	'\u00DE',	 // 	LATIN CAPITAL LETTER THORN (Icelandic)
-		'\xDF':	'\u00DF',	 // 	LATIN SMALL LETTER SHARP S (German)
+		'\xDD':	'\u0130',	 // 	LATIN CAPITAL LETTER I WITH DOT ABOVE
+		'\xDE':	'\u015E',	 // 	LATIN CAPITAL LETTER S WITH CEDILLA
+		'\xDF':	'\u00DF',	 // 	LATIN SMALL LETTER SHARP S
 		'\xE0':	'\u00E0',	 // 	LATIN SMALL LETTER A WITH GRAVE
 		'\xE1':	'\u00E1',	 // 	LATIN SMALL LETTER A WITH ACUTE
 		'\xE2':	'\u00E2',	 // 	LATIN SMALL LETTER A WITH CIRCUMFLEX
@@ -256,7 +244,7 @@ func init() {
 		'\xED':	'\u00ED',	 // 	LATIN SMALL LETTER I WITH ACUTE
 		'\xEE':	'\u00EE',	 // 	LATIN SMALL LETTER I WITH CIRCUMFLEX
 		'\xEF':	'\u00EF',	 // 	LATIN SMALL LETTER I WITH DIAERESIS
-		'\xF0':	'\u00F0',	 // 	LATIN SMALL LETTER ETH (Icelandic)
+		'\xF0':	'\u011F',	 // 	LATIN SMALL LETTER G WITH BREVE
 		'\xF1':	'\u00F1',	 // 	LATIN SMALL LETTER N WITH TILDE
 		'\xF2':	'\u00F2',	 // 	LATIN SMALL LETTER O WITH GRAVE
 		'\xF3':	'\u00F3',	 // 	LATIN SMALL LETTER O WITH ACUTE
@@ -269,27 +257,16 @@ func init() {
 		'\xFA':	'\u00FA',	 // 	LATIN SMALL LETTER U WITH ACUTE
 		'\xFB':	'\u00FB',	 // 	LATIN SMALL LETTER U WITH CIRCUMFLEX
 		'\xFC':	'\u00FC',	 // 	LATIN SMALL LETTER U WITH DIAERESIS
-		'\xFD':	'\u00FD',	 // 	LATIN SMALL LETTER Y WITH ACUTE
-		'\xFE':	'\u00FE',	 // 	LATIN SMALL LETTER THORN (Icelandic)
+		'\xFD':	'\u0131',	 // 	LATIN SMALL LETTER DOTLESS I
+		'\xFE':	'\u015F',	 // 	LATIN SMALL LETTER S WITH CEDILLA
 		'\xFF':	'\u00FF',	 // 	LATIN SMALL LETTER Y WITH DIAERESIS
 
 	}
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := &codecISO_8859_1{
-		EncodeMap: charmapEncode,
-		DecodeMap: charmapDecode,
-	}
+	newCodec := &codecMap8Bit{EncodeMap: charmapEncode, DecodeMap: charmapDecode}
 
-	cm := charmap{
-		Name: "iso_8859_1",
-		Aliases: []string{
-			"8859_1",
-			"iso8859_1",
-		},
-		Codec: codec,
-	}
+	register(newCodec, "ISO-8859-9", "8859-9", "ISO8859-9")
 
-	register(cm)
 }

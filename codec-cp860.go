@@ -1,20 +1,8 @@
 
 package charmap
 
-type codecCP860 struct {
-	EncodeMap map[rune]byte
-	DecodeMap map[byte]rune
-}
-
-func (c *codecCP860) Encode(s string) (string, error) {
-	return mapRunesToBytes(c.EncodeMap, s)
-}
-
-func (c *codecCP860) Decode(s string) (string, error) {
-	return mapBytesToRunes(c.DecodeMap, s)
-}
-
 func init() {
+
 	charmapDecode := map[byte]rune{
 		'\x00':	'\u0000',	 // NULL
 		'\x01':	'\u0001',	 // START OF HEADING
@@ -277,18 +265,8 @@ func init() {
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := &codecCP860{
-		EncodeMap: charmapEncode,
-		DecodeMap: charmapDecode,
-	}
+	newCodec := &codecMap8Bit{EncodeMap: charmapEncode, DecodeMap: charmapDecode}
 
-	cm := charmap{
-		Name: "cp860",
-		Aliases: []string{
-			"860",
-		},
-		Codec: codec,
-	}
+	register(newCodec, "CP860", "CP-860", "860")
 
-	register(cm)
 }

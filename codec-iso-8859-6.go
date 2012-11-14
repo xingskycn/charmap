@@ -1,20 +1,8 @@
 
 package charmap
 
-type codecISO_8859_5 struct {
-	EncodeMap map[rune]byte
-	DecodeMap map[byte]rune
-}
-
-func (c *codecISO_8859_5) Encode(s string) (string, error) {
-	return mapRunesToBytes(c.EncodeMap, s)
-}
-
-func (c *codecISO_8859_5) Decode(s string) (string, error) {
-	return mapBytesToRunes(c.DecodeMap, s)
-}
-
 func init() {
+
 	charmapDecode := map[byte]rune{
 		'\x00':	'\u0000',	 // 	NULL
 		'\x01':	'\u0001',	 // 	START OF HEADING
@@ -177,119 +165,63 @@ func init() {
 		'\x9E':	'\u009E',	 // 	<control>
 		'\x9F':	'\u009F',	 // 	<control>
 		'\xA0':	'\u00A0',	 // 	NO-BREAK SPACE
-		'\xA1':	'\u0401',	 // 	CYRILLIC CAPITAL LETTER IO
-		'\xA2':	'\u0402',	 // 	CYRILLIC CAPITAL LETTER DJE
-		'\xA3':	'\u0403',	 // 	CYRILLIC CAPITAL LETTER GJE
-		'\xA4':	'\u0404',	 // 	CYRILLIC CAPITAL LETTER UKRAINIAN IE
-		'\xA5':	'\u0405',	 // 	CYRILLIC CAPITAL LETTER DZE
-		'\xA6':	'\u0406',	 // 	CYRILLIC CAPITAL LETTER BYELORUSSIAN-UKRAINIAN I
-		'\xA7':	'\u0407',	 // 	CYRILLIC CAPITAL LETTER YI
-		'\xA8':	'\u0408',	 // 	CYRILLIC CAPITAL LETTER JE
-		'\xA9':	'\u0409',	 // 	CYRILLIC CAPITAL LETTER LJE
-		'\xAA':	'\u040A',	 // 	CYRILLIC CAPITAL LETTER NJE
-		'\xAB':	'\u040B',	 // 	CYRILLIC CAPITAL LETTER TSHE
-		'\xAC':	'\u040C',	 // 	CYRILLIC CAPITAL LETTER KJE
+		'\xA4':	'\u00A4',	 // 	CURRENCY SIGN
+		'\xAC':	'\u060C',	 // 	ARABIC COMMA
 		'\xAD':	'\u00AD',	 // 	SOFT HYPHEN
-		'\xAE':	'\u040E',	 // 	CYRILLIC CAPITAL LETTER SHORT U
-		'\xAF':	'\u040F',	 // 	CYRILLIC CAPITAL LETTER DZHE
-		'\xB0':	'\u0410',	 // 	CYRILLIC CAPITAL LETTER A
-		'\xB1':	'\u0411',	 // 	CYRILLIC CAPITAL LETTER BE
-		'\xB2':	'\u0412',	 // 	CYRILLIC CAPITAL LETTER VE
-		'\xB3':	'\u0413',	 // 	CYRILLIC CAPITAL LETTER GHE
-		'\xB4':	'\u0414',	 // 	CYRILLIC CAPITAL LETTER DE
-		'\xB5':	'\u0415',	 // 	CYRILLIC CAPITAL LETTER IE
-		'\xB6':	'\u0416',	 // 	CYRILLIC CAPITAL LETTER ZHE
-		'\xB7':	'\u0417',	 // 	CYRILLIC CAPITAL LETTER ZE
-		'\xB8':	'\u0418',	 // 	CYRILLIC CAPITAL LETTER I
-		'\xB9':	'\u0419',	 // 	CYRILLIC CAPITAL LETTER SHORT I
-		'\xBA':	'\u041A',	 // 	CYRILLIC CAPITAL LETTER KA
-		'\xBB':	'\u041B',	 // 	CYRILLIC CAPITAL LETTER EL
-		'\xBC':	'\u041C',	 // 	CYRILLIC CAPITAL LETTER EM
-		'\xBD':	'\u041D',	 // 	CYRILLIC CAPITAL LETTER EN
-		'\xBE':	'\u041E',	 // 	CYRILLIC CAPITAL LETTER O
-		'\xBF':	'\u041F',	 // 	CYRILLIC CAPITAL LETTER PE
-		'\xC0':	'\u0420',	 // 	CYRILLIC CAPITAL LETTER ER
-		'\xC1':	'\u0421',	 // 	CYRILLIC CAPITAL LETTER ES
-		'\xC2':	'\u0422',	 // 	CYRILLIC CAPITAL LETTER TE
-		'\xC3':	'\u0423',	 // 	CYRILLIC CAPITAL LETTER U
-		'\xC4':	'\u0424',	 // 	CYRILLIC CAPITAL LETTER EF
-		'\xC5':	'\u0425',	 // 	CYRILLIC CAPITAL LETTER HA
-		'\xC6':	'\u0426',	 // 	CYRILLIC CAPITAL LETTER TSE
-		'\xC7':	'\u0427',	 // 	CYRILLIC CAPITAL LETTER CHE
-		'\xC8':	'\u0428',	 // 	CYRILLIC CAPITAL LETTER SHA
-		'\xC9':	'\u0429',	 // 	CYRILLIC CAPITAL LETTER SHCHA
-		'\xCA':	'\u042A',	 // 	CYRILLIC CAPITAL LETTER HARD SIGN
-		'\xCB':	'\u042B',	 // 	CYRILLIC CAPITAL LETTER YERU
-		'\xCC':	'\u042C',	 // 	CYRILLIC CAPITAL LETTER SOFT SIGN
-		'\xCD':	'\u042D',	 // 	CYRILLIC CAPITAL LETTER E
-		'\xCE':	'\u042E',	 // 	CYRILLIC CAPITAL LETTER YU
-		'\xCF':	'\u042F',	 // 	CYRILLIC CAPITAL LETTER YA
-		'\xD0':	'\u0430',	 // 	CYRILLIC SMALL LETTER A
-		'\xD1':	'\u0431',	 // 	CYRILLIC SMALL LETTER BE
-		'\xD2':	'\u0432',	 // 	CYRILLIC SMALL LETTER VE
-		'\xD3':	'\u0433',	 // 	CYRILLIC SMALL LETTER GHE
-		'\xD4':	'\u0434',	 // 	CYRILLIC SMALL LETTER DE
-		'\xD5':	'\u0435',	 // 	CYRILLIC SMALL LETTER IE
-		'\xD6':	'\u0436',	 // 	CYRILLIC SMALL LETTER ZHE
-		'\xD7':	'\u0437',	 // 	CYRILLIC SMALL LETTER ZE
-		'\xD8':	'\u0438',	 // 	CYRILLIC SMALL LETTER I
-		'\xD9':	'\u0439',	 // 	CYRILLIC SMALL LETTER SHORT I
-		'\xDA':	'\u043A',	 // 	CYRILLIC SMALL LETTER KA
-		'\xDB':	'\u043B',	 // 	CYRILLIC SMALL LETTER EL
-		'\xDC':	'\u043C',	 // 	CYRILLIC SMALL LETTER EM
-		'\xDD':	'\u043D',	 // 	CYRILLIC SMALL LETTER EN
-		'\xDE':	'\u043E',	 // 	CYRILLIC SMALL LETTER O
-		'\xDF':	'\u043F',	 // 	CYRILLIC SMALL LETTER PE
-		'\xE0':	'\u0440',	 // 	CYRILLIC SMALL LETTER ER
-		'\xE1':	'\u0441',	 // 	CYRILLIC SMALL LETTER ES
-		'\xE2':	'\u0442',	 // 	CYRILLIC SMALL LETTER TE
-		'\xE3':	'\u0443',	 // 	CYRILLIC SMALL LETTER U
-		'\xE4':	'\u0444',	 // 	CYRILLIC SMALL LETTER EF
-		'\xE5':	'\u0445',	 // 	CYRILLIC SMALL LETTER HA
-		'\xE6':	'\u0446',	 // 	CYRILLIC SMALL LETTER TSE
-		'\xE7':	'\u0447',	 // 	CYRILLIC SMALL LETTER CHE
-		'\xE8':	'\u0448',	 // 	CYRILLIC SMALL LETTER SHA
-		'\xE9':	'\u0449',	 // 	CYRILLIC SMALL LETTER SHCHA
-		'\xEA':	'\u044A',	 // 	CYRILLIC SMALL LETTER HARD SIGN
-		'\xEB':	'\u044B',	 // 	CYRILLIC SMALL LETTER YERU
-		'\xEC':	'\u044C',	 // 	CYRILLIC SMALL LETTER SOFT SIGN
-		'\xED':	'\u044D',	 // 	CYRILLIC SMALL LETTER E
-		'\xEE':	'\u044E',	 // 	CYRILLIC SMALL LETTER YU
-		'\xEF':	'\u044F',	 // 	CYRILLIC SMALL LETTER YA
-		'\xF0':	'\u2116',	 // 	NUMERO SIGN
-		'\xF1':	'\u0451',	 // 	CYRILLIC SMALL LETTER IO
-		'\xF2':	'\u0452',	 // 	CYRILLIC SMALL LETTER DJE
-		'\xF3':	'\u0453',	 // 	CYRILLIC SMALL LETTER GJE
-		'\xF4':	'\u0454',	 // 	CYRILLIC SMALL LETTER UKRAINIAN IE
-		'\xF5':	'\u0455',	 // 	CYRILLIC SMALL LETTER DZE
-		'\xF6':	'\u0456',	 // 	CYRILLIC SMALL LETTER BYELORUSSIAN-UKRAINIAN I
-		'\xF7':	'\u0457',	 // 	CYRILLIC SMALL LETTER YI
-		'\xF8':	'\u0458',	 // 	CYRILLIC SMALL LETTER JE
-		'\xF9':	'\u0459',	 // 	CYRILLIC SMALL LETTER LJE
-		'\xFA':	'\u045A',	 // 	CYRILLIC SMALL LETTER NJE
-		'\xFB':	'\u045B',	 // 	CYRILLIC SMALL LETTER TSHE
-		'\xFC':	'\u045C',	 // 	CYRILLIC SMALL LETTER KJE
-		'\xFD':	'\u00A7',	 // 	SECTION SIGN
-		'\xFE':	'\u045E',	 // 	CYRILLIC SMALL LETTER SHORT U
-		'\xFF':	'\u045F',	 // 	CYRILLIC SMALL LETTER DZHE
+		'\xBB':	'\u061B',	 // 	ARABIC SEMICOLON
+		'\xBF':	'\u061F',	 // 	ARABIC QUESTION MARK
+		'\xC1':	'\u0621',	 // 	ARABIC LETTER HAMZA
+		'\xC2':	'\u0622',	 // 	ARABIC LETTER ALEF WITH MADDA ABOVE
+		'\xC3':	'\u0623',	 // 	ARABIC LETTER ALEF WITH HAMZA ABOVE
+		'\xC4':	'\u0624',	 // 	ARABIC LETTER WAW WITH HAMZA ABOVE
+		'\xC5':	'\u0625',	 // 	ARABIC LETTER ALEF WITH HAMZA BELOW
+		'\xC6':	'\u0626',	 // 	ARABIC LETTER YEH WITH HAMZA ABOVE
+		'\xC7':	'\u0627',	 // 	ARABIC LETTER ALEF
+		'\xC8':	'\u0628',	 // 	ARABIC LETTER BEH
+		'\xC9':	'\u0629',	 // 	ARABIC LETTER TEH MARBUTA
+		'\xCA':	'\u062A',	 // 	ARABIC LETTER TEH
+		'\xCB':	'\u062B',	 // 	ARABIC LETTER THEH
+		'\xCC':	'\u062C',	 // 	ARABIC LETTER JEEM
+		'\xCD':	'\u062D',	 // 	ARABIC LETTER HAH
+		'\xCE':	'\u062E',	 // 	ARABIC LETTER KHAH
+		'\xCF':	'\u062F',	 // 	ARABIC LETTER DAL
+		'\xD0':	'\u0630',	 // 	ARABIC LETTER THAL
+		'\xD1':	'\u0631',	 // 	ARABIC LETTER REH
+		'\xD2':	'\u0632',	 // 	ARABIC LETTER ZAIN
+		'\xD3':	'\u0633',	 // 	ARABIC LETTER SEEN
+		'\xD4':	'\u0634',	 // 	ARABIC LETTER SHEEN
+		'\xD5':	'\u0635',	 // 	ARABIC LETTER SAD
+		'\xD6':	'\u0636',	 // 	ARABIC LETTER DAD
+		'\xD7':	'\u0637',	 // 	ARABIC LETTER TAH
+		'\xD8':	'\u0638',	 // 	ARABIC LETTER ZAH
+		'\xD9':	'\u0639',	 // 	ARABIC LETTER AIN
+		'\xDA':	'\u063A',	 // 	ARABIC LETTER GHAIN
+		'\xE0':	'\u0640',	 // 	ARABIC TATWEEL
+		'\xE1':	'\u0641',	 // 	ARABIC LETTER FEH
+		'\xE2':	'\u0642',	 // 	ARABIC LETTER QAF
+		'\xE3':	'\u0643',	 // 	ARABIC LETTER KAF
+		'\xE4':	'\u0644',	 // 	ARABIC LETTER LAM
+		'\xE5':	'\u0645',	 // 	ARABIC LETTER MEEM
+		'\xE6':	'\u0646',	 // 	ARABIC LETTER NOON
+		'\xE7':	'\u0647',	 // 	ARABIC LETTER HEH
+		'\xE8':	'\u0648',	 // 	ARABIC LETTER WAW
+		'\xE9':	'\u0649',	 // 	ARABIC LETTER ALEF MAKSURA
+		'\xEA':	'\u064A',	 // 	ARABIC LETTER YEH
+		'\xEB':	'\u064B',	 // 	ARABIC FATHATAN
+		'\xEC':	'\u064C',	 // 	ARABIC DAMMATAN
+		'\xED':	'\u064D',	 // 	ARABIC KASRATAN
+		'\xEE':	'\u064E',	 // 	ARABIC FATHA
+		'\xEF':	'\u064F',	 // 	ARABIC DAMMA
+		'\xF0':	'\u0650',	 // 	ARABIC KASRA
+		'\xF1':	'\u0651',	 // 	ARABIC SHADDA
+		'\xF2':	'\u0652',	 // 	ARABIC SUKUN
 
 	}
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := &codecISO_8859_5{
-		EncodeMap: charmapEncode,
-		DecodeMap: charmapDecode,
-	}
+	newCodec := &codecMap8Bit{EncodeMap: charmapEncode, DecodeMap: charmapDecode}
 
-	cm := charmap{
-		Name: "iso_8859_5",
-		Aliases: []string{
-			"8859_5",
-			"iso8859_5",
-		},
-		Codec: codec,
-	}
+	register(newCodec, "ISO-8859-6", "8859-6", "ISO8859-6")
 
-	register(cm)
 }

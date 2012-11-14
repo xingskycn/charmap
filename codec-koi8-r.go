@@ -1,20 +1,8 @@
 
 package charmap
 
-type codecKOI8_R struct {
-	EncodeMap map[rune]byte
-	DecodeMap map[byte]rune
-}
-
-func (c *codecKOI8_R) Encode(s string) (string, error) {
-	return mapRunesToBytes(c.EncodeMap, s)
-}
-
-func (c *codecKOI8_R) Decode(s string) (string, error) {
-	return mapBytesToRunes(c.DecodeMap, s)
-}
-
 func init() {
+
 	charmapDecode := map[byte]rune{
 		'\x00':	'\u0000',	 // 	NULL
 		'\x01':	'\u0001',	 // 	START OF HEADING
@@ -277,18 +265,8 @@ func init() {
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := &codecKOI8_R{
-		EncodeMap: charmapEncode,
-		DecodeMap: charmapDecode,
-	}
+	newCodec := &codecMap8Bit{EncodeMap: charmapEncode, DecodeMap: charmapDecode}
 
-	cm := charmap{
-		Name: "koi8_r",
-		Aliases: []string{
-			"koi8r",
-		},
-		Codec: codec,
-	}
+	register(newCodec, "KOI8-R", "KOI8R")
 
-	register(cm)
 }

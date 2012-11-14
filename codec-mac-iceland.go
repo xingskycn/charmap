@@ -1,20 +1,8 @@
 
 package charmap
 
-type codecMAC_ROMAN struct {
-	EncodeMap map[rune]byte
-	DecodeMap map[byte]rune
-}
-
-func (c *codecMAC_ROMAN) Encode(s string) (string, error) {
-	return mapRunesToBytes(c.EncodeMap, s)
-}
-
-func (c *codecMAC_ROMAN) Decode(s string) (string, error) {
-	return mapBytesToRunes(c.DecodeMap, s)
-}
-
 func init() {
+
 	charmapDecode := map[byte]rune{
 		'\x00':	'\u0000',	 // NULL
 		'\x01':	'\u0001',	 // START OF HEADING
@@ -176,7 +164,7 @@ func init() {
 		'\x9D':	'\u00F9',	 // LATIN SMALL LETTER U WITH GRAVE
 		'\x9E':	'\u00FB',	 // LATIN SMALL LETTER U WITH CIRCUMFLEX
 		'\x9F':	'\u00FC',	 // LATIN SMALL LETTER U WITH DIAERESIS
-		'\xA0':	'\u2020',	 // DAGGER
+		'\xA0':	'\u00DD',	 // LATIN CAPITAL LETTER Y WITH ACUTE
 		'\xA1':	'\u00B0',	 // DEGREE SIGN
 		'\xA2':	'\u00A2',	 // CENT SIGN
 		'\xA3':	'\u00A3',	 // POUND SIGN
@@ -236,11 +224,11 @@ func init() {
 		'\xD9':	'\u0178',	 // LATIN CAPITAL LETTER Y WITH DIAERESIS
 		'\xDA':	'\u2044',	 // FRACTION SLASH
 		'\xDB':	'\u00A4',	 // CURRENCY SIGN
-		'\xDC':	'\u2039',	 // SINGLE LEFT-POINTING ANGLE QUOTATION MARK
-		'\xDD':	'\u203A',	 // SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
-		'\xDE':	'\uFB01',	 // LATIN SMALL LIGATURE FI
-		'\xDF':	'\uFB02',	 // LATIN SMALL LIGATURE FL
-		'\xE0':	'\u2021',	 // DOUBLE DAGGER
+		'\xDC':	'\u00D0',	 // LATIN CAPITAL LETTER ETH
+		'\xDD':	'\u00F0',	 // LATIN SMALL LETTER ETH
+		'\xDE':	'\u00DE',	 // LATIN CAPITAL LETTER THORN
+		'\xDF':	'\u00FE',	 // LATIN SMALL LETTER THORN
+		'\xE0':	'\u00FD',	 // LATIN SMALL LETTER Y WITH ACUTE
 		'\xE1':	'\u00B7',	 // MIDDLE DOT
 		'\xE2':	'\u201A',	 // SINGLE LOW-9 QUOTATION MARK
 		'\xE3':	'\u201E',	 // DOUBLE LOW-9 QUOTATION MARK
@@ -277,18 +265,8 @@ func init() {
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := &codecMAC_ROMAN{
-		EncodeMap: charmapEncode,
-		DecodeMap: charmapDecode,
-	}
+	newCodec := &codecMap8Bit{EncodeMap: charmapEncode, DecodeMap: charmapDecode}
 
-	cm := charmap{
-		Name: "mac_roman",
-		Aliases: []string{
-			"macroman",
-		},
-		Codec: codec,
-	}
+	register(newCodec, "MAC-ICELAND", "MACICELAND")
 
-	register(cm)
 }

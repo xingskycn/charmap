@@ -1,20 +1,8 @@
 
 package charmap
 
-type codecISO_8859_3 struct {
-	EncodeMap map[rune]byte
-	DecodeMap map[byte]rune
-}
-
-func (c *codecISO_8859_3) Encode(s string) (string, error) {
-	return mapRunesToBytes(c.EncodeMap, s)
-}
-
-func (c *codecISO_8859_3) Decode(s string) (string, error) {
-	return mapBytesToRunes(c.DecodeMap, s)
-}
-
 func init() {
+
 	charmapDecode := map[byte]rune{
 		'\x00':	'\u0000',	 // 	NULL
 		'\x01':	'\u0001',	 // 	START OF HEADING
@@ -177,40 +165,44 @@ func init() {
 		'\x9E':	'\u009E',	 // 	<control>
 		'\x9F':	'\u009F',	 // 	<control>
 		'\xA0':	'\u00A0',	 // 	NO-BREAK SPACE
-		'\xA1':	'\u0126',	 // 	LATIN CAPITAL LETTER H WITH STROKE
-		'\xA2':	'\u02D8',	 // 	BREVE
+		'\xA1':	'\u00A1',	 // 	INVERTED EXCLAMATION MARK
+		'\xA2':	'\u00A2',	 // 	CENT SIGN
 		'\xA3':	'\u00A3',	 // 	POUND SIGN
 		'\xA4':	'\u00A4',	 // 	CURRENCY SIGN
-		'\xA6':	'\u0124',	 // 	LATIN CAPITAL LETTER H WITH CIRCUMFLEX
+		'\xA5':	'\u00A5',	 // 	YEN SIGN
+		'\xA6':	'\u00A6',	 // 	BROKEN BAR
 		'\xA7':	'\u00A7',	 // 	SECTION SIGN
 		'\xA8':	'\u00A8',	 // 	DIAERESIS
-		'\xA9':	'\u0130',	 // 	LATIN CAPITAL LETTER I WITH DOT ABOVE
-		'\xAA':	'\u015E',	 // 	LATIN CAPITAL LETTER S WITH CEDILLA
-		'\xAB':	'\u011E',	 // 	LATIN CAPITAL LETTER G WITH BREVE
-		'\xAC':	'\u0134',	 // 	LATIN CAPITAL LETTER J WITH CIRCUMFLEX
+		'\xA9':	'\u00A9',	 // 	COPYRIGHT SIGN
+		'\xAA':	'\u00AA',	 // 	FEMININE ORDINAL INDICATOR
+		'\xAB':	'\u00AB',	 // 	LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+		'\xAC':	'\u00AC',	 // 	NOT SIGN
 		'\xAD':	'\u00AD',	 // 	SOFT HYPHEN
-		'\xAF':	'\u017B',	 // 	LATIN CAPITAL LETTER Z WITH DOT ABOVE
+		'\xAE':	'\u00AE',	 // 	REGISTERED SIGN
+		'\xAF':	'\u00AF',	 // 	MACRON
 		'\xB0':	'\u00B0',	 // 	DEGREE SIGN
-		'\xB1':	'\u0127',	 // 	LATIN SMALL LETTER H WITH STROKE
+		'\xB1':	'\u00B1',	 // 	PLUS-MINUS SIGN
 		'\xB2':	'\u00B2',	 // 	SUPERSCRIPT TWO
 		'\xB3':	'\u00B3',	 // 	SUPERSCRIPT THREE
 		'\xB4':	'\u00B4',	 // 	ACUTE ACCENT
 		'\xB5':	'\u00B5',	 // 	MICRO SIGN
-		'\xB6':	'\u0125',	 // 	LATIN SMALL LETTER H WITH CIRCUMFLEX
+		'\xB6':	'\u00B6',	 // 	PILCROW SIGN
 		'\xB7':	'\u00B7',	 // 	MIDDLE DOT
 		'\xB8':	'\u00B8',	 // 	CEDILLA
-		'\xB9':	'\u0131',	 // 	LATIN SMALL LETTER DOTLESS I
-		'\xBA':	'\u015F',	 // 	LATIN SMALL LETTER S WITH CEDILLA
-		'\xBB':	'\u011F',	 // 	LATIN SMALL LETTER G WITH BREVE
-		'\xBC':	'\u0135',	 // 	LATIN SMALL LETTER J WITH CIRCUMFLEX
+		'\xB9':	'\u00B9',	 // 	SUPERSCRIPT ONE
+		'\xBA':	'\u00BA',	 // 	MASCULINE ORDINAL INDICATOR
+		'\xBB':	'\u00BB',	 // 	RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
+		'\xBC':	'\u00BC',	 // 	VULGAR FRACTION ONE QUARTER
 		'\xBD':	'\u00BD',	 // 	VULGAR FRACTION ONE HALF
-		'\xBF':	'\u017C',	 // 	LATIN SMALL LETTER Z WITH DOT ABOVE
+		'\xBE':	'\u00BE',	 // 	VULGAR FRACTION THREE QUARTERS
+		'\xBF':	'\u00BF',	 // 	INVERTED QUESTION MARK
 		'\xC0':	'\u00C0',	 // 	LATIN CAPITAL LETTER A WITH GRAVE
 		'\xC1':	'\u00C1',	 // 	LATIN CAPITAL LETTER A WITH ACUTE
 		'\xC2':	'\u00C2',	 // 	LATIN CAPITAL LETTER A WITH CIRCUMFLEX
+		'\xC3':	'\u00C3',	 // 	LATIN CAPITAL LETTER A WITH TILDE
 		'\xC4':	'\u00C4',	 // 	LATIN CAPITAL LETTER A WITH DIAERESIS
-		'\xC5':	'\u010A',	 // 	LATIN CAPITAL LETTER C WITH DOT ABOVE
-		'\xC6':	'\u0108',	 // 	LATIN CAPITAL LETTER C WITH CIRCUMFLEX
+		'\xC5':	'\u00C5',	 // 	LATIN CAPITAL LETTER A WITH RING ABOVE
+		'\xC6':	'\u00C6',	 // 	LATIN CAPITAL LETTER AE
 		'\xC7':	'\u00C7',	 // 	LATIN CAPITAL LETTER C WITH CEDILLA
 		'\xC8':	'\u00C8',	 // 	LATIN CAPITAL LETTER E WITH GRAVE
 		'\xC9':	'\u00C9',	 // 	LATIN CAPITAL LETTER E WITH ACUTE
@@ -220,27 +212,29 @@ func init() {
 		'\xCD':	'\u00CD',	 // 	LATIN CAPITAL LETTER I WITH ACUTE
 		'\xCE':	'\u00CE',	 // 	LATIN CAPITAL LETTER I WITH CIRCUMFLEX
 		'\xCF':	'\u00CF',	 // 	LATIN CAPITAL LETTER I WITH DIAERESIS
+		'\xD0':	'\u00D0',	 // 	LATIN CAPITAL LETTER ETH (Icelandic)
 		'\xD1':	'\u00D1',	 // 	LATIN CAPITAL LETTER N WITH TILDE
 		'\xD2':	'\u00D2',	 // 	LATIN CAPITAL LETTER O WITH GRAVE
 		'\xD3':	'\u00D3',	 // 	LATIN CAPITAL LETTER O WITH ACUTE
 		'\xD4':	'\u00D4',	 // 	LATIN CAPITAL LETTER O WITH CIRCUMFLEX
-		'\xD5':	'\u0120',	 // 	LATIN CAPITAL LETTER G WITH DOT ABOVE
+		'\xD5':	'\u00D5',	 // 	LATIN CAPITAL LETTER O WITH TILDE
 		'\xD6':	'\u00D6',	 // 	LATIN CAPITAL LETTER O WITH DIAERESIS
 		'\xD7':	'\u00D7',	 // 	MULTIPLICATION SIGN
-		'\xD8':	'\u011C',	 // 	LATIN CAPITAL LETTER G WITH CIRCUMFLEX
+		'\xD8':	'\u00D8',	 // 	LATIN CAPITAL LETTER O WITH STROKE
 		'\xD9':	'\u00D9',	 // 	LATIN CAPITAL LETTER U WITH GRAVE
 		'\xDA':	'\u00DA',	 // 	LATIN CAPITAL LETTER U WITH ACUTE
 		'\xDB':	'\u00DB',	 // 	LATIN CAPITAL LETTER U WITH CIRCUMFLEX
 		'\xDC':	'\u00DC',	 // 	LATIN CAPITAL LETTER U WITH DIAERESIS
-		'\xDD':	'\u016C',	 // 	LATIN CAPITAL LETTER U WITH BREVE
-		'\xDE':	'\u015C',	 // 	LATIN CAPITAL LETTER S WITH CIRCUMFLEX
-		'\xDF':	'\u00DF',	 // 	LATIN SMALL LETTER SHARP S
+		'\xDD':	'\u00DD',	 // 	LATIN CAPITAL LETTER Y WITH ACUTE
+		'\xDE':	'\u00DE',	 // 	LATIN CAPITAL LETTER THORN (Icelandic)
+		'\xDF':	'\u00DF',	 // 	LATIN SMALL LETTER SHARP S (German)
 		'\xE0':	'\u00E0',	 // 	LATIN SMALL LETTER A WITH GRAVE
 		'\xE1':	'\u00E1',	 // 	LATIN SMALL LETTER A WITH ACUTE
 		'\xE2':	'\u00E2',	 // 	LATIN SMALL LETTER A WITH CIRCUMFLEX
+		'\xE3':	'\u00E3',	 // 	LATIN SMALL LETTER A WITH TILDE
 		'\xE4':	'\u00E4',	 // 	LATIN SMALL LETTER A WITH DIAERESIS
-		'\xE5':	'\u010B',	 // 	LATIN SMALL LETTER C WITH DOT ABOVE
-		'\xE6':	'\u0109',	 // 	LATIN SMALL LETTER C WITH CIRCUMFLEX
+		'\xE5':	'\u00E5',	 // 	LATIN SMALL LETTER A WITH RING ABOVE
+		'\xE6':	'\u00E6',	 // 	LATIN SMALL LETTER AE
 		'\xE7':	'\u00E7',	 // 	LATIN SMALL LETTER C WITH CEDILLA
 		'\xE8':	'\u00E8',	 // 	LATIN SMALL LETTER E WITH GRAVE
 		'\xE9':	'\u00E9',	 // 	LATIN SMALL LETTER E WITH ACUTE
@@ -250,39 +244,29 @@ func init() {
 		'\xED':	'\u00ED',	 // 	LATIN SMALL LETTER I WITH ACUTE
 		'\xEE':	'\u00EE',	 // 	LATIN SMALL LETTER I WITH CIRCUMFLEX
 		'\xEF':	'\u00EF',	 // 	LATIN SMALL LETTER I WITH DIAERESIS
+		'\xF0':	'\u00F0',	 // 	LATIN SMALL LETTER ETH (Icelandic)
 		'\xF1':	'\u00F1',	 // 	LATIN SMALL LETTER N WITH TILDE
 		'\xF2':	'\u00F2',	 // 	LATIN SMALL LETTER O WITH GRAVE
 		'\xF3':	'\u00F3',	 // 	LATIN SMALL LETTER O WITH ACUTE
 		'\xF4':	'\u00F4',	 // 	LATIN SMALL LETTER O WITH CIRCUMFLEX
-		'\xF5':	'\u0121',	 // 	LATIN SMALL LETTER G WITH DOT ABOVE
+		'\xF5':	'\u00F5',	 // 	LATIN SMALL LETTER O WITH TILDE
 		'\xF6':	'\u00F6',	 // 	LATIN SMALL LETTER O WITH DIAERESIS
 		'\xF7':	'\u00F7',	 // 	DIVISION SIGN
-		'\xF8':	'\u011D',	 // 	LATIN SMALL LETTER G WITH CIRCUMFLEX
+		'\xF8':	'\u00F8',	 // 	LATIN SMALL LETTER O WITH STROKE
 		'\xF9':	'\u00F9',	 // 	LATIN SMALL LETTER U WITH GRAVE
 		'\xFA':	'\u00FA',	 // 	LATIN SMALL LETTER U WITH ACUTE
 		'\xFB':	'\u00FB',	 // 	LATIN SMALL LETTER U WITH CIRCUMFLEX
 		'\xFC':	'\u00FC',	 // 	LATIN SMALL LETTER U WITH DIAERESIS
-		'\xFD':	'\u016D',	 // 	LATIN SMALL LETTER U WITH BREVE
-		'\xFE':	'\u015D',	 // 	LATIN SMALL LETTER S WITH CIRCUMFLEX
-		'\xFF':	'\u02D9',	 // 	DOT ABOVE
+		'\xFD':	'\u00FD',	 // 	LATIN SMALL LETTER Y WITH ACUTE
+		'\xFE':	'\u00FE',	 // 	LATIN SMALL LETTER THORN (Icelandic)
+		'\xFF':	'\u00FF',	 // 	LATIN SMALL LETTER Y WITH DIAERESIS
 
 	}
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := &codecISO_8859_3{
-		EncodeMap: charmapEncode,
-		DecodeMap: charmapDecode,
-	}
+	newCodec := &codecMap8Bit{EncodeMap: charmapEncode, DecodeMap: charmapDecode}
 
-	cm := charmap{
-		Name: "iso_8859_3",
-		Aliases: []string{
-			"8859_3",
-			"iso8859_3",
-		},
-		Codec: codec,
-	}
+	register(newCodec, "ISO-8859-1", "8859-1", "ISO8859-1")
 
-	register(cm)
 }

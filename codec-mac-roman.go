@@ -1,20 +1,8 @@
 
 package charmap
 
-type codecMAC_TURKISH struct {
-	EncodeMap map[rune]byte
-	DecodeMap map[byte]rune
-}
-
-func (c *codecMAC_TURKISH) Encode(s string) (string, error) {
-	return mapRunesToBytes(c.EncodeMap, s)
-}
-
-func (c *codecMAC_TURKISH) Decode(s string) (string, error) {
-	return mapBytesToRunes(c.DecodeMap, s)
-}
-
 func init() {
+
 	charmapDecode := map[byte]rune{
 		'\x00':	'\u0000',	 // NULL
 		'\x01':	'\u0001',	 // START OF HEADING
@@ -234,12 +222,12 @@ func init() {
 		'\xD7':	'\u25CA',	 // LOZENGE
 		'\xD8':	'\u00FF',	 // LATIN SMALL LETTER Y WITH DIAERESIS
 		'\xD9':	'\u0178',	 // LATIN CAPITAL LETTER Y WITH DIAERESIS
-		'\xDA':	'\u011E',	 // LATIN CAPITAL LETTER G WITH BREVE
-		'\xDB':	'\u011F',	 // LATIN SMALL LETTER G WITH BREVE
-		'\xDC':	'\u0130',	 // LATIN CAPITAL LETTER I WITH DOT ABOVE
-		'\xDD':	'\u0131',	 // LATIN SMALL LETTER DOTLESS I
-		'\xDE':	'\u015E',	 // LATIN CAPITAL LETTER S WITH CEDILLA
-		'\xDF':	'\u015F',	 // LATIN SMALL LETTER S WITH CEDILLA
+		'\xDA':	'\u2044',	 // FRACTION SLASH
+		'\xDB':	'\u00A4',	 // CURRENCY SIGN
+		'\xDC':	'\u2039',	 // SINGLE LEFT-POINTING ANGLE QUOTATION MARK
+		'\xDD':	'\u203A',	 // SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
+		'\xDE':	'\uFB01',	 // LATIN SMALL LIGATURE FI
+		'\xDF':	'\uFB02',	 // LATIN SMALL LIGATURE FL
 		'\xE0':	'\u2021',	 // DOUBLE DAGGER
 		'\xE1':	'\u00B7',	 // MIDDLE DOT
 		'\xE2':	'\u201A',	 // SINGLE LOW-9 QUOTATION MARK
@@ -261,7 +249,7 @@ func init() {
 		'\xF2':	'\u00DA',	 // LATIN CAPITAL LETTER U WITH ACUTE
 		'\xF3':	'\u00DB',	 // LATIN CAPITAL LETTER U WITH CIRCUMFLEX
 		'\xF4':	'\u00D9',	 // LATIN CAPITAL LETTER U WITH GRAVE
-		// '\xF5' UNDEFINED
+		'\xF5':	'\u0131',	 // LATIN SMALL LETTER DOTLESS I
 		'\xF6':	'\u02C6',	 // MODIFIER LETTER CIRCUMFLEX ACCENT
 		'\xF7':	'\u02DC',	 // SMALL TILDE
 		'\xF8':	'\u00AF',	 // MACRON
@@ -277,18 +265,8 @@ func init() {
 
 	charmapEncode := reverseByteRuneMap(charmapDecode)
 
-	codec := &codecMAC_TURKISH{
-		EncodeMap: charmapEncode,
-		DecodeMap: charmapDecode,
-	}
+	newCodec := &codecMap8Bit{EncodeMap: charmapEncode, DecodeMap: charmapDecode}
 
-	cm := charmap{
-		Name: "mac_turkish",
-		Aliases: []string{
-			"macturkish",
-		},
-		Codec: codec,
-	}
+	register(newCodec, "MAC-ROMAN", "MACROMAN")
 
-	register(cm)
 }

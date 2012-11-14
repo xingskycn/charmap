@@ -8,21 +8,15 @@ import (
 var aliasesMap = make(map[string]string)
 var codecsMap = make(map[string]codec)
 
-type charmap struct {
-	Name    string
-	Aliases []string
-	Codec   codec
-}
-
 type codec interface {
 	Encode(data string) (string, error)
 	Decode(data string) (string, error)
 }
 
-func register(c charmap) {
-	codecsMap[c.Name] = c.Codec
-	for _, alias := range c.Aliases {
-		aliasesMap[alias] = c.Name
+func register(c codec, name string, aliases ...string) {
+	codecsMap[name] = c
+	for _, alias := range aliases {
+		aliasesMap[alias] = name
 	}
 }
 
@@ -56,8 +50,8 @@ func List() []string {
 // Encode encodes the string data from utf8 to encoding
 // If encoding is not supported it returns unchanged string and EncodingNotSupportedError
 func Encode(data string, encoding string) (string, error) {
-	encoding = strings.ToLower(encoding)
-	encoding = strings.Replace(encoding, "-", "_", -1)
+	encoding = strings.ToUpper(encoding)
+	encoding = strings.Replace(encoding, "_", "-", -1)
 
 	if name, ok := aliasesMap[encoding]; ok {
 		encoding = name
@@ -74,8 +68,8 @@ func Encode(data string, encoding string) (string, error) {
 // Decode decodes the string data from encoding into utf8
 // If encoding is not supported it returns unchanged string and EncodingNotSupportedError
 func Decode(data string, encoding string) (string, error) {
-	encoding = strings.ToLower(encoding)
-	encoding = strings.Replace(encoding, "-", "_", -1)
+	encoding = strings.ToUpper(encoding)
+	encoding = strings.Replace(encoding, "_", "-", -1)
 
 	if name, ok := aliasesMap[encoding]; ok {
 		encoding = name
@@ -89,7 +83,7 @@ func Decode(data string, encoding string) (string, error) {
 	return data, EncodingNotSupportedError(encoding)
 }
 
-// some functions to simplify 8bit codecs definition 
+// simple 8bit codecs definition support
 
 func reverseByteRuneMap(m map[byte]rune) (newmap map[rune]byte) {
 	newmap = make(map[rune]byte)
@@ -136,4 +130,17 @@ func mapRunesToBytes(cm map[rune]byte, data string) (string, error) {
 	}
 
 	return string(result), err
+}
+
+type codecMap8Bit struct {
+	EncodeMap map[rune]byte
+	DecodeMap map[byte]rune
+}
+
+func (c *codecMap8Bit) Encode(s string) (string, error) {
+	return mapRunesToBytes(c.EncodeMap, s)
+}
+
+func (c *codecMap8Bit) Decode(s string) (string, error) {
+	return mapBytesToRunes(c.DecodeMap, s)
 }
