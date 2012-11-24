@@ -34,8 +34,11 @@ func List() []string {
 	return list
 }
 
-// Encode encodes the string data from utf8 to encoding
-// If encoding is not supported it returns unchanged string and EncodingNotSupportedError
+// Encode converts a string from UTF-8 to the specified encoding. Returns converted string. 
+// If the input string contains illegal characters for the specified encoding,
+// these characters will be replaced with a substitute character ('?') and
+// ErrInvalidCodepoint will be returned in error value.
+// If the specified encoding is unknown, it will return the input string and ErrUnknownEncoding
 func Encode(data string, encoding string) (string, error) {
 	encoding = strings.ToUpper(encoding)
 	encoding = strings.Replace(encoding, "_", "-", -1)
@@ -52,8 +55,11 @@ func Encode(data string, encoding string) (string, error) {
 	return data, ErrUnknownEncoding
 }
 
-// Decode decodes the string data from encoding into utf8
-// If encoding is not supported it returns unchanged string and EncodingNotSupportedError
+// Decode converts a string from the specified encoding to UTF-8.  Returns converted string. 
+// If the input string contains illegal characters for the specified encoding,
+// these characters will be replaced with a substitute character (utf8.RuneError) and
+// ErrInvalidCodepoint will be returned in error value.
+// If the specified encoding is unknown, it will return the input string and ErrUnknownEncoding
 func Decode(data string, encoding string) (string, error) {
 	encoding = strings.ToUpper(encoding)
 	encoding = strings.Replace(encoding, "_", "-", -1)
