@@ -38,20 +38,20 @@ Converts the string from UTF-8 to the specified encoding.
 
 If the string contains illegal characters for this encoding,
 these characters are replaced with a substitute character ('?') and
-EncodeError is returned in second return value.
+ErrInvalidCodepoint is returned in second return value.
 
 In case of unknown encoding, returned string remains unchanged and
-EncodingNotSupportedError is returned in second return value
+ErrUnknownEncoding is returned in second return value
 
     func Decode(data string, encoding string) (string, error)
 Converts string from the specified encoding to UTF-8 
 
 If the string contains illegal characters for this encoding,
 these characters are replaced with a substitute character (utf8.RuneError) and
-DecodeError is returned in second return value
+ErrInvalidCodepoint is returned in second return value
 
 In case of unknown encoding, returned string remains unchanged and
-EncodingNotSupportedError is returned in second return value
+ErrUnknownEncoding is returned in second return value
 
     func List() []string
 Returns names of all supported encodings as a slice of strings
