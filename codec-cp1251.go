@@ -267,6 +267,6 @@ func init() {
 
 	newCodec := &codecMap8Bit{EncodeMap: charmapEncode, DecodeMap: charmapDecode}
 
-	register(newCodec, "CP1251", "CP-1251", "1251")
+	register(newCodec, "CP1251", "CP-1251", "1251", "WINDOWS-1251")
 
 }
