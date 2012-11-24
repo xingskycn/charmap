@@ -35,7 +35,7 @@ func main() {
 ###Overview
 
     func Encode(data string, encoding string) (string, error)
-Converts the string from UTF-8 to the specified encoding. Returns converted string. 
+Converts a string from UTF-8 to the specified encoding. Returns converted string. 
 
 If the input string contains illegal characters for the specified encoding,
 these characters will be replaced with a substitute character ('?') and
@@ -44,7 +44,7 @@ ErrInvalidCodepoint will be returned in error value.
 If the specified encoding is unknown, it will return the input string and ErrUnknownEncoding
 
     func Decode(data string, encoding string) (string, error)
-Converts string from the specified encoding to UTF-8 
+Converts a string from the specified encoding to UTF-8.  Returns converted string. 
 
 If the input string contains illegal characters for the specified encoding,
 these characters will be replaced with a substitute character (utf8.RuneError) and
