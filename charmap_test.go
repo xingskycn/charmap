@@ -116,7 +116,7 @@ func TestDecode(t *testing.T) {
 func TestList(t *testing.T) {
 	list := List()
 	if len(list) == 0 {
-		t.Error("list encoding: length === 0")
+		t.Error("list encoding: length == 0")
 	}
 
 	check := 0
