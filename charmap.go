@@ -1,3 +1,6 @@
+// Package charmap implements functions for character encodings conversion. 
+// A number of 8bit encodings are supported. The package provides Encode and
+// Decode functions to convert a string from and to UTF-8 respectively.
 package charmap
 
 import (
